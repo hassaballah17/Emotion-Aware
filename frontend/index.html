@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Emotion-Aware</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      font-size: 16px;
+      padding: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    .response {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Emotion-Aware</h2>
+
+  <textarea id="inputText" placeholder="Write what you’re feeling..."></textarea>
+  <br />
+  <button onclick="sendText()">Send</button>
+
+  <div id="response" class="response" style="display:none;"></div>
+
+  <script>
+    async function sendText() {
+      const text = document.getElementById("inputText").value;
+      if (!text) return;
+
+      const res = await fetch("http://127.0.0.1:8000/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text })
+      });
+
+      const data = await res.json();
+
+      document.getElementById("response").style.display = "block";
+      document.getElementById("response").innerHTML = `
+        <strong>Detected emotion:</strong> ${data.emotion}<br><br>
+        <strong>Reflection:</strong> ${data.reflection}<br><br>
+        <strong>Naming:</strong> ${data.naming}<br><br>
+        <strong>Acceptance:</strong> ${data.acceptance}<br><br>
+        <strong>Reframe:</strong> ${data.reframe}
+      `;
+    }
+  </script>
+
+</body>
+</html>

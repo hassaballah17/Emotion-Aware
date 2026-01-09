@@ -1,0 +1,6 @@
+from app.nlp.text_processing import preprocess_text
+
+def test_preprocess():
+    text = "I am feeling overwhelmed and ashamed."
+    tokens = preprocess_text(text)
+    assert "overwhelmed" in tokens
